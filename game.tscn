@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dyp0ne5o6ehn5"]
+
+[ext_resource type="Script" path="res://line.gd" id="1_1ejd8"]
+[ext_resource type="PackedScene" uid="uid://dfbyja8s4vcnb" path="res://assets/line/line.tscn" id="1_4puch"]
+[ext_resource type="PackedScene" uid="uid://guyi0rkkxqi" path="res://assets/notes/note.tscn" id="2_g4gpc"]
+
+[node name="Game" type="Node"]
+
+[node name="line" type="Node" parent="."]
+script = ExtResource("1_1ejd8")
+note_scene = ExtResource("2_g4gpc")
+speed = 1.0
+pixel = -540
+
+[node name="line" parent="line" instance=ExtResource("1_4puch")]
+position = Vector2(576, 8)
+
+[node name="startPosition" type="Marker2D" parent="line"]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="line" method="_on_timer_timeout"]
