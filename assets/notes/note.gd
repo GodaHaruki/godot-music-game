@@ -16,4 +16,5 @@ func set_info(softlan: float, p_time: float, id: int):
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
+	print(position)
 	queue_free()

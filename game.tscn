@@ -10,10 +10,10 @@
 script = ExtResource("1_1ejd8")
 note_scene = ExtResource("2_g4gpc")
 speed = 2.0
-pixel = -1080
+judgement_bar_pixel = 1920
 
 [node name="line" parent="line" instance=ExtResource("1_4puch")]
-position = Vector2(576, 8)
+position = Vector2(553, 0)
 
 [node name="startPosition" type="Marker2D" parent="line"]
 

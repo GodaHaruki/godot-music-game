@@ -2,31 +2,37 @@ extends Node
 
 @export var note_scene: PackedScene
 @export var speed: float
-@export var pixel: int
+@export var judgement_bar_pixel: int
+
+@onready var line = $line
+@onready var startPosition = $startPosition
 
 func new_note(softlanding_speed: float, perfect_time: float, note_id: int):
 	var note = note_scene.instantiate()
-	note.position = Vector2(0, $startPosition.position[0])
+	note.position = Vector2(0, startPosition.position[0])
 	note.set_info(softlanding_speed, perfect_time, note_id)
 	#remove_child(get_children()[0])
 	print(note.perfect_time)
-	$line.add_child(note)
+	line.add_child(note)
 	pass
 	
 func _process(_delta): 
 	var now_time = Time.get_unix_time_from_system()
 	# 相対座標、相対スケールが使われているから、childのスケールやサイズがおかしくなりがち
-	var cs = $line.get_children()
-	#print(cs)
+	var cs = line.get_children()
+	
 	for n in cs:
-		#print(pixel - pixel * (1 / speed) * (n.perfect_time - float(time)))
 		n.position = Vector2(
 			n.position[0],
-			pixel + pixel * 
+			judgement_bar_pixel - judgement_bar_pixel * 
 			speed * 
 			(n.perfect_time - 
 			now_time)
 			)
+		if now_time - n.perfect_time > 0.3:
+			print("delete note")
+			line.remove_child(n)
+		
 	
 	if Input.is_action_just_pressed("bt1"):
 
@@ -37,7 +43,7 @@ func _process(_delta):
 			print("judgetime: ", perfect_time - now_time)
 			# judge
 			# perfect
-			if perfect_time < now_time - 0.2 or perfect_time > now_time + 0.5:
+			if perfect_time < now_time - 0.2 or perfect_time > now_time + 0.2:
 				pass
 			elif perfect_time < now_time - 0.1 or  perfect_time > now_time + 0.1:
 				print("great")
@@ -48,5 +54,4 @@ func _process(_delta):
 
 func _on_timer_timeout():
 	print("timeouted")
-	print($line.get_child_count())
 	new_note(0, Time.get_unix_time_from_system() + 1, int(randi() % 100))
