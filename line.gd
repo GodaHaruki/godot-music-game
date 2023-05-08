@@ -14,9 +14,8 @@ func new_note(softlanding_speed: float, perfect_time: float, note_id: int):
 	pass
 	
 func _process(_delta): 
+	var now_time = Time.get_unix_time_from_system()
 	# 相対座標、相対スケールが使われているから、childのスケールやサイズがおかしくなりがち
-	
-	
 	var cs = $line.get_children()
 	#print(cs)
 	for n in cs:
@@ -26,9 +25,24 @@ func _process(_delta):
 			pixel + pixel * 
 			speed * 
 			(n.perfect_time - 
-			Time.get_unix_time_from_system())
+			now_time)
 			)
-		
+	
+	if Input.is_action_just_pressed("bt1"):
+
+		for note in cs:
+			var perfect_time = note.perfect_time
+			print("nowtime: ",now_time)
+			print("perfecttime: ", perfect_time)	
+			print("judgetime: ", perfect_time - now_time)
+			# judge
+			# perfect
+			if perfect_time < now_time - 0.2 or perfect_time > now_time + 0.5:
+				pass
+			elif perfect_time < now_time - 0.1 or  perfect_time > now_time + 0.1:
+				print("great")
+			elif perfect_time < now_time - 0.05 or perfect_time > now_time + 0.05:
+				print("perfect")
 	# pixel - pixel * ( 1 / speed) * (perfect_time - current_time 
 
 
